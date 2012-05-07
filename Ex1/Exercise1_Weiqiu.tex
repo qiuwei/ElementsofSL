@@ -1,0 +1,108 @@
+\documentclass[12pt]{article}
+\usepackage{homework}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage{bbm}
+\usepackage{amsthm}
+\usepackage{epstopdf}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+%\DeclareMathOperator*{\max}{max}
+%\DeclareMathOperator*{\min}{min}
+\sethwtitle{The elements of SL Exercise 1}%
+\sethwauthor{Wei Qiu, Ehsan Khoddammohammadi}%
+\makehwheader%
+
+\begin{document}
+\makehwtitle%
+\section{}
+Supervised learning is a machine learning task of inferring a function from supervised(labeled) \emph{training data}. Training data consist of a set of training examples. Each training example consist of \emph{inputs}(or \emph{features},\emph{predictors}, \emph{independent variables}) and \emph{outcome}(or \emph{response}, \emph{dependent variables}).
+There variables can be real number(or machine representation of real number) which are called \emph{quantitative variable} or discrete values which are called \emph{qualitative/categorical variable}. 
+
+The task is to learn some function mapping from features to outcome which can be used for unseen or new data for which the outcome is lacking. The unseen/new data is called \emph{test data}. If the \emph{outcome} is quantitative variable, the task is called \emph{regression}, or if it's qualitative variable, the task is called \emph{classification}. 
+\section{}
+\begin{eqnarray*}
+    LHS &=& \argmin_c{E(Y-c)^2} \\
+    &=& \argmin_c{E(Y^2 - 2cY +c^2)} \\
+    &=& \argmin_c{E(Y^2) - 2c*E(Y) + c^2} \\
+    &=& \argmin_c{E(Y)^2 + Var(Y) - 2cE(Y) + c^2} \\
+    \text{Take the first derivative according to c}\\
+    \frac{d LHS}{d c} &=&  2c - 2E(Y) 
+\end{eqnarray*}
+    The second derivative is 2, so it's a convex function, the function will be minimized if we let the $\frac{dLHS}{dc} = 0$,
+    So $c = E(Y)$\\
+The practical benefit of squared error consists of several aspects:
+\begin{enumerate}
+    \item The squared error punish the points further from the desired points more heavily, which may be a desired property for some real problems. 
+    \item Squared error will lead to a mathematical problem which would be easier to solve since the square function is differentiable and convex. And convex optimization is doable.
+\end{enumerate} 
+The main usage of this theorem is to show that the average of data is the best estimator (minimizer) hence the squared loss function.
+\section{}
+It's easy to show the optimal $\beta$ satisfies that
+\begin{eqnarray*}
+    X^TX \beta &=& X^Ty
+\end{eqnarray*}
+Use the script attached, 
+\begin{eqnarray*}
+    \beta &=& %\left\[
+    \begin{bmatrix}
+        4\\
+        6\\
+        -4
+    \end{bmatrix}%\right\[
+\end{eqnarray*}
+\section{}
+\begin{enumerate}
+\item Ozone data is a data frame with four variables(columns)  and 111 observations (rows): 
+\begin{enumerate}
+\item ozone: numeric
+\item radiation : integer
+\item temperature: integer
+\item wind: num
+\end{enumerate}
+Among these 111 instances 80 are considered as training set and remaining 31 instances are test set which their index are identified by two vector. Figure 1 is showing the scatter plot of each variable varsus others.
+\item 
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=1]{Rplot01.pdf}
+\caption{Scatter plot of variables}
+\label{fig:scatter plot of ozone dataset}
+\end{figure}
+
+   
+
+They are two significant trends could be identified in this plot. Increasing trend of \emph ozone as  a function of \emph temperature and decreasing rate of \emph ozone w.r.s to \emph wind are most obvious trends. It seems there is no linear dependency between \emph ozone and other two parameters. There is also a negative weak correlation between \emph temperature and \emph wind. You can find the correlation coefficients of each pair of variables in Table 1. \\ \\
+\begin{table}[h!b!p!]
+\caption {Correlation coefficient of each pair of variables}
+\centering
+\begin{tabular}{ | l | l | l | l | l | }
+    \hline
+    {} & Ozone  &  Radiation &  Temperature  &  Wind \\ \hline
+    Ozone & 1.0000000 & 0.3483417 &  0.6985414 & -0.6129508  \\ \hline
+    Radiation & 0.3483417 & 1.0000000 &  0.2940876 & -0.1273656\\ \hline
+    Temperature & 0.6985414 & 0.2940876 &  1.0000000 & -0.4971459 \\    \hline
+    Wind & -0.6129508 & -0.1273656 & -0.4971459 & 1.0000000\\ \hline
+
+    \end{tabular}
+\label{table1}
+\end{table}
+
+\item RSS is 8208.509 and correlation coefficient between predicted level of \emph ozone and real (true) level of it is 0.826 which means prediction and actual response are highly correlated. Figure 2 is visualizing the plot of predicted level of ozone vs. the real value of it.
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=1]{Rplot.pdf}
+\caption{Predicted ozone level vs. real ozone level.}
+\label{fig:predicted ozone level vs. real ozone level}
+\end{figure}
+
+\item more neighbors, larger number for k, is increasing the complexity of  K-NN model. The best performance could be observed by k=14. The best rss is 19491.82 which is more than rss of previous fitted linear model. Correlation of predicted level of ozone and actual level is 0.152 which is dramatically worse than linear model performance. In K-NN your parameter to be chosen is just k while we need to compute 4 parameters for linear models. (one intercept and three slopes). In figure 3 you can see the effect of changing the number of neighbours on the performance of the model. 
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=1]{Rplot02.pdf}
+\caption{RSS of K-NN classifer vs. number of neighbours(k)}
+\label{fig:RSS of K-NN classifer vs. number of neighbours(k)}
+\end{figure}
+
+\end{enumerate}
+\end{document}
+
